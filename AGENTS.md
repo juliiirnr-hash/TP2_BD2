@@ -4,8 +4,9 @@
 University Databases 2 (BD2) assignment (repo `juliiirnr-hash/TP2_BD2`): a food ordering/catalog system. Deliverable is **only a PostgreSQL SQL schema** — there is no app layer, no build/test/lint tooling.
 
 ## Canonical file — root repo is the source of truth
-- Develop and commit the **root** `schema.sql`. It is tracked by the root git repo.
-- `TP2_BD2/schema.sql` is a stale/empty duplicate — do not edit or commit from it.
+- Develop and commit the **root** `schema.sql`. It is tracked by the root git repo and holds the full, real DDL.
+- There is no `TP2_BD2/schema.sql` file on disk (the nested repo's copy is deleted; both committed versions were empty placeholders). Do not recreate or edit one there — work only in root `schema.sql`.
+- Root `schema.sql` is re-runnable and wraps all DDL in a single `BEGIN`...`COMMIT` block; keep that structure when editing.
 
 ## Git trap
 - `TP2_BD2/` is a **nested, independent git repo** pointing at the **same remote** as the root, not a submodule. The root repo reports it as untracked (`?? TP2_BD2/`).
