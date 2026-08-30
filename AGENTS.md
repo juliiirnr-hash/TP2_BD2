@@ -41,3 +41,7 @@ Note: the committed root `schema.sql` already deviates slightly from these docs 
 ## Conventions
 - Commit messages in Spanish (e.g. "Agrego schema"); keep new commits in Spanish.
 - Single-file schema: keep everything in `schema.sql`; do not split into migration scripts unless the user asks.
+## Specs de restricciones (TP2 - Parte 4)
+
+- En `detalle_pedido`, el campo `subtotal` debe ser igual a `cantidad × precio_unitario`.
+- En `pedido`, el campo `estado` no puede volver de CONFIRMADO a PENDIENTE.
