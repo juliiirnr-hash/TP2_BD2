@@ -6,7 +6,7 @@ University Databases 2 (BD2) assignment (repo `juliiirnr-hash/TP2_BD2`): a food 
 ## Canonical file — root repo is the source of truth
 - Develop and commit the **root** `schema.sql`. It is tracked by the root git repo and holds the full, real DDL.
 - There is no `TP2_BD2/schema.sql` file on disk (the nested repo's copy is deleted; both committed versions were empty placeholders). Do not recreate or edit one there — work only in root `schema.sql`.
-- Root `schema.sql` is re-runnable and wraps all DDL in a single `BEGIN`...`COMMIT` block; keep that structure when editing.
+- Root `schema.sql` is **not** re-runnable as-is: it uses plain `CREATE TYPE`/`CREATE TABLE` with no `DROP ... IF EXISTS` and no wrapping `BEGIN`/`COMMIT`. Apply it to a fresh DB, or add `DROP ... IF EXISTS` around the objects first.
 
 ## Git trap
 - `TP2_BD2/` is a **nested, independent git repo** pointing at the **same remote** as the root, not a submodule. The root repo reports it as untracked (`?? TP2_BD2/`).
@@ -19,6 +19,8 @@ Read these before writing schema code — they are the authoritative project rul
 - `TP2_BD2/.kiro/steering/structure.md` — naming, types, constraints, logical delete
 - `TP2_BD2/.kiro/steering/tech.md` — stack, re-runnable script rules
 - `TP2_BD2/protocolo_seguridad.md` — DB safety workflow (read-only; never edit)
+
+Note: the committed root `schema.sql` already deviates slightly from these docs (e.g. `usuario` uses column `rol`, not the `rol_usuario` used as the ENUM name; `detalle_pedido` adds a `subtotal`; FKs are inline `REFERENCES ... ON DELETE ...` with no named `CONSTRAINT fk_...`). Trust the committed schema as truth; reconcile docs only if asked.
 
 ## Schema rules (non-negotiable)
 - Postgres idioms only: PKs with `GENERATED ALWAYS AS IDENTITY` (never `SERIAL`), `TIMESTAMPTZ`, `NUMERIC(10,2)` with `CHECK (valor >= 0)`, `CREATE TYPE ... AS ENUM`.
