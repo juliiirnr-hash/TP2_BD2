@@ -67,7 +67,7 @@ CREATE TABLE detalle_pedido (
 
 
 CREATE INDEX idx_pedido_usuario ON pedido(id_usuario);
-CREATE INDEX idx_producto_categoria ON producto(id_categoria) WHERE eliminado = FALSE; --solo incluimos los productos que no estan borrados o "inactivos"
+CREATE INDEX idx_producto_categoria ON producto(id_categoria) WHERE eliminado = FALSE AND disponible = TRUE; --solo incluimos los productos activos y disponibles
 CREATE INDEX idx_detalle_pedido ON detalle_pedido(id_pedido);
 
 --Un pedido confirmado no puede volver al estado PENDIENTE
