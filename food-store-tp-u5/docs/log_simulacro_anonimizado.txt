@@ -1,0 +1,26 @@
+-- LOG SIMULACRO ANONIMIZADO — TP U5 Parte C.3
+-- Fuente: data/log/postgresql-YYYY-MM-DD_HHMMSS.log (fragmento de la ejecución de sql/simulacro_incidente.sql)
+-- Anonimización criterio usuario_anon (Clase 2): mails/nombres reales → valores sintéticos test.local,
+-- IP real → rango TEST-NET-1 192.0.2.x. Nada de este archivo contiene datos reales.
+-- Cómo reemplazar con tu log real: corre el simulacro, ubica las líneas entre el primer
+-- fn_autenticar y el último GRANT, y sustituye mail/IP/nombre por los sintéticos de abajo.
+2026-10-16 21:40:01.120 -03 [4120] LOG:  conexión recibida: host=192.0.2.10 port=54321
+2026-10-16 21:40:01.135 -03 [4120] LOG:  conexión autenticada: usuario="postgres" base de datos="food_store_test" método=scram-sha-256
+2026-10-16 21:40:02.010 -03 [4120] STATEMENT:  SELECT fn_autenticar('victima.c001@test.local', 'wrong1') AS login_ok;
+2026-10-16 21:40:02.310 -03 [4120] STATEMENT:  SELECT fn_autenticar('victima.c001@test.local', 'wrong2') AS login_ok;
+2026-10-16 21:40:02.610 -03 [4120] STATEMENT:  SELECT fn_autenticar('victima.c001@test.local', 'wrong3') AS login_ok;
+2026-10-16 21:40:03.005 -03 [4120] STATEMENT:  SELECT fn_autenticar('victima.c001@test.local', 'ClaveC001_123') AS login_ok;
+2026-10-16 21:40:03.400 -03 [4120] LOG:  conexión recibida: host=192.0.2.10 port=54322
+2026-10-16 21:40:03.415 -03 [4120] LOG:  conexión autenticada: usuario="app_web" base de datos="food_store_test" método=scram-sha-256
+2026-10-16 21:40:03.520 -03 [4120] ERROR:  permiso denegado para la tabla usuario
+2026-10-16 21:40:03.520 -03 [4120] STATEMENT:  SELECT count(*) FROM usuario;
+2026-10-16 21:40:04.100 -03 [4120] ERROR:  permiso denegado para la tabla usuario
+2026-10-16 21:40:04.100 -03 [4120] STATEMENT:  SELECT id_usuario, mail FROM usuario LIMIT 20;
+2026-10-16 21:40:04.500 -03 [4120] ERROR:  permiso denegado para el rol admin_datos
+2026-10-16 21:40:04.500 -03 [4120] STATEMENT:  GRANT admin_datos TO app_web;
+2026-10-16 21:40:04.800 -03 [4120] ERROR:  permiso denegado para la tabla usuario
+2026-10-16 21:40:04.800 -03 [4120] STATEMENT:  TRUNCATE TABLE usuario;
+2026-10-16 21:40:05.050 -03 [4120] LOG:  desconexión: duración de la sesión 0:00:04
+-- Nota de cobertura (ver docs/informe_auditoria.md): con log_statement='mod' los SELECT
+-- de fn_autenticar y los SELECT masivos NO quedan registrados como STATEMENT (solo los
+-- ERROR por permiso); los GRANT/TRUNCATE sí. El detalle fila por fila requeriría pgaudit.
