@@ -1,0 +1,35 @@
+Parte 4: Simulacro de desastre y recuperaciónPreparación del entorno de prueba:
+-Se creó una base de datos independiente y descartable mediante la terminal para simular el escenario de recuperación ante un desastre, utilizando el comando:
+PowerShellcreatedb -h localhost -p 5432 -U postgres foodstore_restore_test
+Ejecución de la recuperación:
+Se restauró con éxito el archivo de respaldo generado previamente (food_store_test_20261029_0952.dump) utilizando la herramienta de extracción lógica pg_restore, la cual finalizó sin arrojar errores:   
+PowerShellpg_restore -h localhost -p 5432 -U postgres -d foodstore_restore_test --no-owner --no-privileges "C:\Respaldos\food_store_test\food_store_test_20261029_0952.dump"
+Script de validación e integridad estructural (Conteo de filas):
+Una vez conectado a la base de datos de prueba (foodstore_restore_test), se ejecutó el siguiente script SQL para contrastar y verificar la cantidad de registros recuperados por tabla, obteniendo totales consistentes:   
+SQL
+SELECT 'categoria' AS tabla, COUNT(*) AS filas FROM categoria
+UNION ALL SELECT 'usuario', COUNT(*) FROM usuario
+UNION ALL SELECT 'producto', COUNT(*) FROM producto
+UNION ALL SELECT 'pedido', COUNT(*) FROM pedido
+UNION ALL SELECT 'detalle_pedido', COUNT(*) FROM detalle_pedido;
+```[cite: 4]
+*Resultados obtenidos:* 
+`categoria`: 9,
+ `usuario`: 20, 
+`producto`: 50, 
+`pedido`: 10.700, 
+`detalle_pedido`: 53.500[cite: 10].
+
+Script de validación de restricciones lógicas de negocio:
+Se ejecutó el script de control sobre los valores críticos para certificar la sanidad y consistencia de los datos restaurados:   
+SQL
+wSELECT COUNT(*) AS productos_invalidos
+FROM producto
+WHERE precio < 0 OR stock < 0;
+
+SELECT COUNT(*) AS detalles_invalidos
+FROM detalle_pedido
+WHERE cantidad <= 0 OR precio_unitario < 0;
+```[cite: 4]
+*Resultados obtenidos:* Ambas consultas arrojaron **0** registros inválidos, validando la integridad absoluta de la base de datos recuperada[cite: 11].
+

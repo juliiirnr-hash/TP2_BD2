@@ -10,8 +10,8 @@ $PgBin   = 'C:\Program Files\PostgreSQL\18\bin'
 $PgHost  = 'localhost'
 $PgUser  = 'mant_backup'
 $Base    = 'food_store_test'
-$Destino = 'D:\Respaldos\food_store_test'
-$LogDir  = 'D:\Respaldos\logs'
+$Destino = "C:\Respaldos\food_store_test"
+$LogDir  = "C:\Respaldos\logs"
 $Retencion = 14 # Días de retención de respaldos antiguos
 
 # Generación de marcas de tiempo y nombres de archivo
