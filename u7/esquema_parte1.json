@@ -1,0 +1,31 @@
+{
+  "_id": "int (conserva id_pedido)",
+  "fecha": "date",
+  "estado": "string (DEFAULT 'PENDIENTE')",
+  "forma_pago": "string",
+  "total": "float",
+  "usuario": {
+    "id_usuario": "int",
+    "nombre": "string",
+    "apellido": "string",
+    "mail": "string",
+    "celular": "string",
+    "rol": "string"
+  },
+  "detalle_pedido": [
+    {
+      "id_detalle": "int",
+      "cantidad": "int",
+      "precio_unitario": "float",
+      "subtotal": "float",
+      "producto": {
+        "id_producto": "int",
+        "nombre": "string",
+        "categoria": {
+          "id_categoria": "int",
+          "nombre": "string"
+        }
+      }
+    }
+  ]
+}
